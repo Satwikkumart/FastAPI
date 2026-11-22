@@ -1,0 +1,13 @@
+{
+    "S001": {
+        "name": "Aarav Sharma",
+        "age": 20,
+        "email": "aarav.sharma@example.com",
+        "course": "Python",
+        "marks": 92
+    },
+    
+    "S002": {
+
+    }
+}
