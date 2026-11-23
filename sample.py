@@ -41,4 +41,6 @@ data = {
     }
 }
 
-print(data)
+id = input("Enter id you want (ex: S001): ") #S001
+
+print(data[id])
