@@ -41,6 +41,12 @@ data = {
     }
 }
 
-id = input("Enter id you want (ex: S001): ") #S001
+# id = input("Enter id you want (ex: S001): ") #S001
 
-print(data[id])
+# print(data[id])
+
+# print(data["S005"]["course"])
+
+for student_id, info in data.items():
+    if info["course"] == "Data Science":
+        print(info)

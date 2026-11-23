@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Path
+from fastapi import FastAPI, HTTPException, Path, Query
 import json
 
 app = FastAPI()
@@ -42,3 +42,19 @@ def get_id(student_id : str = Path(...,description="The Id of the student",
         )
 
     return data[student_id]
+
+
+@app.get('/filter')
+def filter_student(course : str = Query(None, 
+                                        description="Show only stundets in this course", examples=["python"])):
+    data = load_data()
+
+    if course is None:
+        return data
+
+    filtered = {}
+    for student_id, info in data.items():
+        if info["course"].lower() == course.lower():
+            filtered[student_id] = info
+
+    return filtered
