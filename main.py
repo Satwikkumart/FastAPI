@@ -72,24 +72,24 @@ SORT_ORDER = ["asc", "desc"]
 
 @app.get('/sort')
 def sort_students(
-    sort_by : str,
-    order : str
+    sort_by : str = Query(None, description="Sort by marks, age, name", examples=["marks"]),
+    order : str = Query("asc", description="asc or desc", examples=["asc", "desc"])
 ):
     #If the given sort_by input doesn't belongto  (marks, age, name) we will raise an error
     if sort_by not in SORT_FIELDS:
         raise HTTPException(
             status_code=404,
-            detail=f"Invalid sort_by '{sort}', choose from {SORT_FIELDS}"
+            detail=f"Invalid sort_by '{sort_by}', choose from {SORT_FIELDS}"
         )
 
     #If the given order input doesn't give to any (asc, desc) we will raise an error
     if order not in SORT_ORDER:
         raise HTTPException(
             status_code=404,
-            detail=f"Invalid order '{order}', chosse from {order}"
+            detail=f"Invalid order '{order}', chosse from {SORT_ORDER}"
         )
 
-    data = load_data
+    data = load_data()
 
     #step-1 Turn the dictionary into a list, putting the ID inside each student
     student = []
