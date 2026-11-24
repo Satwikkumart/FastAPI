@@ -30,7 +30,10 @@ def student():
     return load_data()
 
 
-#student_id -> this is our Path Parameter
+"""
+PATH - PARARMETER
+student_id -> this is our Path Parameter
+"""
 @app.get("/student/{student_id}")
 def get_id(student_id : str = Path(...,description="The Id of the student",
             examples=['S001'])):
@@ -43,6 +46,10 @@ def get_id(student_id : str = Path(...,description="The Id of the student",
 
     return data[student_id]
 
+"""
+QUERY - PARAMTER
+filter -> This is our Query Parameter
+"""
 
 @app.get('/filter')
 def filter_student(course : str = Query(None, 
@@ -58,3 +65,40 @@ def filter_student(course : str = Query(None,
             filtered[student_id] = info
 
     return filtered
+
+
+SORT_FIELDS = ["marks", "age", "name"]
+SORT_ORDER = ["asc", "desc"]
+
+@app.get('/sort')
+def sort_students(
+    sort_by : str,
+    order : str
+):
+    #If the given sort_by input doesn't belongto  (marks, age, name) we will raise an error
+    if sort_by not in SORT_FIELDS:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Invalid sort_by '{sort}', choose from {SORT_FIELDS}"
+        )
+
+    #If the given order input doesn't give to any (asc, desc) we will raise an error
+    if order not in SORT_ORDER:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Invalid order '{order}', chosse from {order}"
+        )
+
+    data = load_data
+
+    #step-1 Turn the dictionary into a list, putting the ID inside each student
+    student = []
+    for student_id, info in data.items():
+        info["id"] = student_id
+        student.append(info)
+
+    #step-2 Sort the list by the choosen field
+    reverse = (order=="desc")
+    sorted_students = sorted(student, key=lambda s:s[sort_by],reverse=reverse)
+
+    return sorted_students
