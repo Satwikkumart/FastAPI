@@ -118,3 +118,23 @@ end : start + limit
 @app.get('/pagination')
 def paginate_student(page:int, limit:int):
     data =load_data()
+
+    #step-1 Turn the dictionary into a list, putting the ID inside each student
+    student = []
+    for student_id, info in data.items():
+        info["id"] = student_id
+        student.append(info)
+
+    start = (page-1) * limit
+    end = start + limit
+
+    page_student = student[start : end] 
+
+    total_students = len(student)
+
+    return {
+        "page": page,
+        "limit": limit,
+        "total_students": total_students,
+        "students": page_student 
+    }
