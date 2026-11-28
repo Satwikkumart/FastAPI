@@ -103,4 +103,18 @@ def sort_students(
 
     return sorted_students
 
-    
+
+"""
+PAGINATION
+http://127.0.0.1:8000/paginate?page=1&limit2
+
+page -> which page you want
+limit -> how many students(records) on one page
+
+Formula:
+start: (page - 1) * limit
+end : start + limit
+"""
+@app.get('/pagination')
+def paginate_student(page:int, limit:int):
+    data =load_data()
